@@ -32,6 +32,13 @@ try:
 
     print(bin_str, 'to integer is', new_int)
 
+    ## Alternative algorithm (as raised in class 3-oct)
+    new_answer = 0
+    for e in bin_str[:-1]:
+        new_answer += new_answer + (int(e) * 2)
+    new_answer += int(bin_str[-1])
+
+    print(f"Alternative algorithm: {bin_str} to int is {new_answer}")
 
 except ValueError as e:
     print("You made an error. Try again.")
