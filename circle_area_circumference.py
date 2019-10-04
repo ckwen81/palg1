@@ -12,5 +12,5 @@ radius_float = float(radius_str)
 circumference = 2 * math.pi * radius_float
 area = math.pi * (radius_float ** 2)
 
-print("When radius is", radius_float, "circumference is",
-      circumference, "and area is", area)
+print("When radius is", radius_float, "circumference is", circumference, "and area is", area)
+
