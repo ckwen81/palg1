@@ -22,9 +22,10 @@ def read_any_text_file(file_name):
     :return: File contents, if possible.
     """
     try:
+        whole_file = None
         with open(file_name, "r") as fh:
-            for line in fh:
-                print(line.strip())
+            # for line in fh:
+            #     print(line.strip())
             whole_file = fh.read()
 
         return whole_file
@@ -63,7 +64,7 @@ def get_stuff_from_net(url):
         return None
 
 
-def start_point():
+def main():
     """
     This is a function to test that the file-read and URL-get functions work properly. Only use in stand-alone mode.
 
@@ -85,4 +86,4 @@ if __name__ == "__main__":
     be set to the module’s name. Module’s name is available as value to __name__ global variable. A module is a file 
     containing Python definitions and statements. The file name is the module name with the suffix .py appended.
     """
-    start_point()
+    main()
