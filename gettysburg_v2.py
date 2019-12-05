@@ -31,7 +31,7 @@ SPEECH_URL = "http://193.1.33.31:88/pa1/gettysburg.txt"
 STOPWORDS_URL = "http://193.1.33.31:88/pa1/stopwords.txt"
 
 
-def make_word_list(g_file, stop_words):
+def make_word_list(g_fil*e, stop_words):
     """Create a list of words from the file while excluding stop words."""
     speech = []  # list of speech words: initialized to be empty
 

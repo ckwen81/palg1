@@ -1,28 +1,65 @@
-def get_stuff_from_net(url):
-    """
-    This function accepts a URL as input and attempts to retrieve this resource from the Net.
+from datetime import datetime
+import read_from_file_or_net as rf
 
-    :param url: The required resource URL, fully qualified, i.e. http{s}://... Add a space at the end or else you'll
-    attempt to launch a browser
+my_file = "GOOGL.csv"
 
-    :return: The content of the resource appropriately decoded if possible.
-    """
-    try:
-        import requests
+container_csv_text = rf.read_any_text_file(my_file)
+csv_text = container_csv_text.strip()
+csv_file = csv_text.split('\n')
 
-        response = requests.get(url)
-        print("-" * 50)
-        for k, v in response.headers.items():
-            print(f"{k}: {v}")
-        print(f"Status code: {response.status_code} - {response.reason}")
-        print(f"Encoding: {response.encoding}")
-        print("-" * 50)
+csv_file_lists = []
+for string in csv_file:
+    csv_file_lists.append(string.split(','))
 
-        if response.status_code > 399:
-            raise ValueError(f"HTTP status code is {response.status_code} - {response.reason}. ")
-        if response.encoding:
-            return response.content.decode(response.encoding)
-        return response.content.decode()
-    except Exception as e:
-        print(f"Something bad happened when trying to get {url}.\nI can't return anything.\n{e}")
-        return None
+data = []
+
+for row in csv_file_lists[1:]:
+    tradeDay = datetime.strptime(row[0], '%Y-%m-%d')
+    price = float(row[5])
+    vol = int(row[6])
+    data.append([tradeDay, price, vol])
+
+'''Function calAverage iterates through the data tuple using for_mthyear as a parameter to calculate for month using 
+%Y-%m as part of the datetime library and Year for %Y.  There are no check or error handling at the moment for any date 
+formats other than dates in the following format YYYY-MM-DD and it assumes that the csv file is listed in ascending order 
+using the tradeday as the key
+'''
+def calAverage(data, for_mthyear):
+    base_date = datetime.strftime(data[0][0], for_mthyear)
+    average_data = []
+    vprice = 0
+    volume = 0
+
+    for date in data:
+        checkdate = datetime.strftime(date[0], for_mthyear)
+
+        if checkdate == base_date:
+            vprice += date[1]*date[2]
+            volume += date[2]
+
+        elif checkdate != base_date:
+            average = vprice / volume
+            average_data.append([base_date, average])
+            base_date = checkdate
+            vprice = 0
+            volume = 0
+            vprice = date[1]*date[2]
+            volume = date[2]
+
+        if date is data[-1]:
+            average = vprice / volume
+            average_data.append([base_date, average])
+    return average_data
+
+def main():
+    monthly_avg = calAverage(data, for_mthyear='%Y-%m')
+    dict(monthly_avg)
+    monthly_avg = sorted(monthly_avg, key=lambda tup: tup[1])
+    print(monthly_avg)
+    yearly_avg = calAverage(data, for_mthyear='%Y')
+    print(yearly_avg)
+    yearly_avg.sort()
+    print(yearly_avg)
+if __name__ == '__main__':
+    main()
+
