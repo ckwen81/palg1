@@ -53,13 +53,40 @@ def calAverage(data, for_mthyear):
 
 def main():
     monthly_avg = calAverage(data, for_mthyear='%Y-%m')
-    dict(monthly_avg)
     monthly_avg = sorted(monthly_avg, key=lambda tup: tup[1])
     print(monthly_avg)
+
+
     yearly_avg = calAverage(data, for_mthyear='%Y')
+    yearly_avg = sorted(yearly_avg, key=lambda tup: tup[1])
     print(yearly_avg)
-    yearly_avg.sort()
-    print(yearly_avg)
+
+    print("\n Worst 6 Years")
+    print("----------------")
+    for year in  yearly_avg[:6]:
+        print(f"{year[0]} : {year[1]:<.2f}")
+
+    print("\n Worst 6 months")
+    print("----------------")
+    for month in monthly_avg[:6]:
+        print(f"{month[0]} : {month[1]:<.2f}")
+
+    '''Since it is already sorted we are going to select the last six items (best 6)' \
+     in the list using the [begin:end:step]'''
+
+    print("\n Best 6 months")
+    print("----------------")
+    for month in yearly_avg[-1:-7:-1]:
+        print(f"{month[0]} : {month[1]:<.2f}")
+
+    print("\n Best 6 Years")
+    print("----------------")
+    for year in yearly_avg[-1:-7:-1]:
+        print(f"{year[0]} : {year[1]:<.2f}")
+
+
+
+
 if __name__ == '__main__':
     main()
 
